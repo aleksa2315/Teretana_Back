@@ -4,7 +4,8 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "trainings")
@@ -17,10 +18,9 @@ public class Training {
     private Long id;
 
     private String name;
+    private String description;
 
-    private String estimatedDuration;
-
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name = "training_id")
-    private List<Exercise> exercises;
+    // Povezanost sa bridging entitetom
+    @OneToMany(mappedBy = "training", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<TrainingExercise> trainingExercises = new HashSet<>();
 }

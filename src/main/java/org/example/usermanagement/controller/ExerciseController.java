@@ -1,8 +1,12 @@
 package org.example.usermanagement.controller;
 
 import org.example.usermanagement.dtos.ExerciseDTO;
+import org.example.usermanagement.entity.Exercise;
 import org.example.usermanagement.service.ExerciseService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,8 +21,14 @@ public class ExerciseController {
     private ExerciseService exerciseService;
 
     @GetMapping
-    public ResponseEntity<List<ExerciseDTO>> getAllExercises() {
-        return ResponseEntity.ok(exerciseService.getAllExercises());
+    public ResponseEntity<Page<Exercise>> getExercises(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "") String search
+    ) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Exercise> result = exerciseService.getExercises(pageable, search);
+        return ResponseEntity.ok(result);
     }
 
     @GetMapping("/{id}")

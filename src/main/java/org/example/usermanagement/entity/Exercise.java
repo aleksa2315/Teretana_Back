@@ -16,7 +16,5 @@ public class Exercise {
 
     private String name;
 
-    private int sets;
-
-    private int repetitions;
+    private String note;
 }

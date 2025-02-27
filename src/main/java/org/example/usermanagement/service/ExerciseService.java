@@ -5,6 +5,8 @@ import org.example.usermanagement.entity.Exercise;
 import org.example.usermanagement.repository.ExerciseRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,10 +21,11 @@ public class ExerciseService {
     @Autowired
     private ModelMapper modelMapper;
 
-    public List<ExerciseDTO> getAllExercises() {
-        return exerciseRepository.findAll().stream()
-                .map(exercise -> modelMapper.map(exercise, ExerciseDTO.class))
-                .collect(Collectors.toList());
+    public Page<Exercise> getExercises(Pageable pageable, String search) {
+        if (search != null && !search.isEmpty()) {
+            return exerciseRepository.findByNameContainingIgnoreCase(search, pageable);
+        }
+        return exerciseRepository.findAll(pageable);
     }
 
     public ExerciseDTO getExerciseById(Long id) {

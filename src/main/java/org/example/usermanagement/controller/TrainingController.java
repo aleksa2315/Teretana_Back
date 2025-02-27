@@ -3,11 +3,10 @@ package org.example.usermanagement.controller;
 import org.example.usermanagement.dtos.TrainingDTO;
 import org.example.usermanagement.service.TrainingService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/api/trainings")
@@ -17,23 +16,31 @@ public class TrainingController {
     private TrainingService trainingService;
 
     @GetMapping
-    public ResponseEntity<List<TrainingDTO>> getAllTrainings() {
+    public ResponseEntity<Set<TrainingDTO>> getAllTrainings() {
         return ResponseEntity.ok(trainingService.getAllTrainings());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<TrainingDTO> getTrainingById(@PathVariable Long id) {
-        return ResponseEntity.ok(trainingService.getTrainingById(id));
+    public ResponseEntity<TrainingDTO> getTraining(@PathVariable Long id) {
+        TrainingDTO dto = trainingService.getTrainingById(id);
+        if (dto == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(dto);
     }
 
     @PostMapping
     public ResponseEntity<TrainingDTO> createTraining(@RequestBody TrainingDTO trainingDTO) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(trainingService.createTraining(trainingDTO));
+        TrainingDTO saved = trainingService.createOrUpdateTraining(trainingDTO);
+        return ResponseEntity.ok(saved);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<TrainingDTO> updateTraining(@PathVariable Long id, @RequestBody TrainingDTO trainingDTO) {
-        return ResponseEntity.ok(trainingService.updateTraining(id, trainingDTO));
+        // Uveri se da postavimo ID
+        trainingDTO.setId(id);
+        TrainingDTO updated = trainingService.createOrUpdateTraining(trainingDTO);
+        return ResponseEntity.ok(updated);
     }
 
     @DeleteMapping("/{id}")
