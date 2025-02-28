@@ -51,6 +51,12 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.PUT,"/orders/cancel/").hasAnyAuthority("CAN_CANCEL_ORDER")
                         .requestMatchers(HttpMethod.GET,"/orders/track/{id}").hasAnyAuthority("CAN_TRACK_ORDER")
                         .requestMatchers(HttpMethod.POST,"/orders/schedule/").hasAnyAuthority("CAN_SCHEDULE_ORDER")
+
+                        .requestMatchers("/api/dishes/**").permitAll()
+                        .requestMatchers("api/exercises/**").permitAll()
+                        .requestMatchers("/api/trainings/**").permitAll()
+                        .requestMatchers("/api/ingredients/**").permitAll()
+                        .requestMatchers("/api/meal-plans/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
