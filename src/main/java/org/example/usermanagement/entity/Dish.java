@@ -22,4 +22,8 @@ public class Dish {
 
     @OneToMany(mappedBy = "dish", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<DishIngredient> ingredients = new HashSet<>();
+    
+    @OneToMany(mappedBy = "dish", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<MealPlanDish> mealPlanDishes;
+
 }

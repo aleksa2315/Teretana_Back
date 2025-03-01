@@ -18,13 +18,7 @@ public class MealPlan {
 
     private String name;
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(
-            name = "meal_plan_dishes",
-            joinColumns = @JoinColumn(name = "meal_plan_id"),
-            inverseJoinColumns = @JoinColumn(name = "dish_id")
-    )
-    private List<Dish> dishes;
-
+    @OneToMany(mappedBy = "mealPlan", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<MealPlanDish> mealPlanDishes;
 
 }
