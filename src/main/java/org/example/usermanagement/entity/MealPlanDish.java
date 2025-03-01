@@ -3,7 +3,6 @@ package org.example.usermanagement.entity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-import java.io.Serializable;
 
 @Entity
 @Table(name = "meal_plan_dishes")
@@ -12,7 +11,7 @@ import java.io.Serializable;
 public class MealPlanDish {
 
     @EmbeddedId
-    private MealPlanDishId id;
+    private MealPlanDishId id = new MealPlanDishId(); // Ensure ID is never null
 
     @ManyToOne
     @MapsId("mealPlanId")
@@ -23,16 +22,14 @@ public class MealPlanDish {
     @MapsId("dishId")
     @JoinColumn(name = "dish_id")
     private Dish dish;
-}
 
-@Embeddable
-@Getter
-@Setter
-class MealPlanDishId implements Serializable {
+    public void setMealPlan(MealPlan mealPlan) {
+        this.mealPlan = mealPlan;
+        this.id.setMealPlanId(mealPlan.getId()); // Ensure mealPlanId is set
+    }
 
-    @Column(name = "meal_plan_id")
-    private Long mealPlanId;
-
-    @Column(name = "dish_id")
-    private Long dishId;
+    public void setDish(Dish dish) {
+        this.dish = dish;
+        this.id.setDishId(dish.getId()); // Ensure dishId is set
+    }
 }

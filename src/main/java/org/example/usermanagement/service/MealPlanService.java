@@ -2,6 +2,7 @@ package org.example.usermanagement.service;
 
 import org.example.usermanagement.dtos.MealPlanDTO;
 import org.example.usermanagement.entity.MealPlan;
+import org.example.usermanagement.entity.MealPlanDish;
 import org.example.usermanagement.repository.MealPlanRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,13 +39,14 @@ public class MealPlanService {
         // Ensure mealPlanDishes are properly linked
         if (savedMealPlan.getMealPlanDishes() != null) {
             for (MealPlanDish dish : savedMealPlan.getMealPlanDishes()) {
-                dish.setMealPlan(savedMealPlan); // Assign the saved MealPlan
-                dish.getId().setMealPlanId(savedMealPlan.getId()); // Assign ID explicitly
+                dish.setMealPlan(savedMealPlan); // Assign MealPlan
+                dish.setDish(dish.getDish()); // Ensure dish ID is set
             }
         }
 
         return mealPlanRepository.save(savedMealPlan);
     }
+
 
 
     public MealPlanDTO updateMealPlan(Long id, MealPlanDTO mealPlanDTO) {
