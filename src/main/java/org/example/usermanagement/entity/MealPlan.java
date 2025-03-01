@@ -18,8 +18,13 @@ public class MealPlan {
 
     private String name;
 
-    @OneToMany(fetch = FetchType.LAZY)
-    @JoinColumn(name = "meal_plan_id")
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "meal_plan_dishes",
+            joinColumns = @JoinColumn(name = "meal_plan_id"),
+            inverseJoinColumns = @JoinColumn(name = "dish_id")
+    )
     private List<Dish> dishes;
+
 
 }
