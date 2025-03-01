@@ -31,11 +31,21 @@ public class MealPlanService {
                 .orElse(null);
     }
 
-    public MealPlanDTO createMealPlan(MealPlanDTO mealPlanDTO) {
-        MealPlan mealPlan = modelMapper.map(mealPlanDTO, MealPlan.class);
+    public MealPlan createMealPlan(MealPlan mealPlan) {
+        // Save MealPlan first so it gets an ID
         MealPlan savedMealPlan = mealPlanRepository.save(mealPlan);
-        return modelMapper.map(savedMealPlan, MealPlanDTO.class);
+
+        // Ensure mealPlanDishes are properly linked
+        if (savedMealPlan.getMealPlanDishes() != null) {
+            for (MealPlanDish dish : savedMealPlan.getMealPlanDishes()) {
+                dish.setMealPlan(savedMealPlan); // Assign the saved MealPlan
+                dish.getId().setMealPlanId(savedMealPlan.getId()); // Assign ID explicitly
+            }
+        }
+
+        return mealPlanRepository.save(savedMealPlan);
     }
+
 
     public MealPlanDTO updateMealPlan(Long id, MealPlanDTO mealPlanDTO) {
         if (mealPlanRepository.existsById(id)) {
