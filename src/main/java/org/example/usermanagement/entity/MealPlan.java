@@ -18,7 +18,7 @@ public class MealPlan {
 
     private String name;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(fetch = FetchType.LAZY)
     @JoinColumn(name = "meal_plan_id")
     private List<Dish> dishes;
 
