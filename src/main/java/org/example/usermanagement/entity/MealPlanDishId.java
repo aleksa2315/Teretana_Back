@@ -10,7 +10,7 @@ import java.io.Serializable;
 @Embeddable
 @Getter
 @Setter
-class MealPlanDishId implements Serializable {
+public class MealPlanDishId implements Serializable {
 
     @Column(name = "meal_plan_id")
     private Long mealPlanId;

@@ -1,12 +1,15 @@
 package org.example.usermanagement.dtos;
 
-import lombok.Data;
+import lombok.*;
+
 import java.util.List;
 
-@Data
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class MealPlanDTO {
-
     private Long id;
     private String name;
-    private List<DishDTO> dishes;
+    private List<Long> dishes;
 }
